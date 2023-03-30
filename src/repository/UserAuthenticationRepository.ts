@@ -9,7 +9,7 @@ export class UserAuthenticationRepository {
         this.prisma = prisma;
     }
 
-    async create(entity: UserAuthentication): Promise<UserAuthentication> {
+    create = async (entity: UserAuthentication): Promise<UserAuthentication> => {
         await this.prisma.userAuthentication.create({
             data: {
                 id: entity.id,
@@ -22,32 +22,42 @@ export class UserAuthenticationRepository {
         return entity;
     }
 
-    async findById(id: string): Promise<UserAuthentication | null> {
+    findById = async (id: string): Promise<UserAuthentication | null> => {
         return this.prisma.userAuthentication.findUnique({
             where: {id: id}
         });
     }
 
-    async findByEmail(email: string): Promise<UserAuthentication | null> {
+    findByEmail = (email: string): Promise<UserAuthentication | null> => {
         return this.prisma.userAuthentication.findUnique({
             where: {email: email}
         });
     }
 
-    async isEmailTaken(email: string): Promise<boolean> {
-        const userAuthentication = await this.findByEmail(email);
-        return userAuthentication !== null;
-    }
-
-    async findByUsername(username: string): Promise<UserAuthentication | null> {
+    findByUsername = async (username: string): Promise<UserAuthentication | null> => {
         return this.prisma.userAuthentication.findUnique({
             where: {username: username}
         });
     }
 
-    async isUsernameTaken(username: string): Promise<boolean> {
-        const userAuthentication = await this.findByUsername(username);
+    findByUsernameOrEmail = async (usernameOrEmail: string): Promise<UserAuthentication | null> => {
+        return this.prisma.userAuthentication.findFirst({
+            where: {
+                OR: [
+                    {username: usernameOrEmail},
+                    {email: usernameOrEmail}
+                ]
+            }
+        });
+    }
+
+    isEmailTaken = async (email: string): Promise<boolean> => {
+        const userAuthentication = await this.findByEmail(email);
         return userAuthentication !== null;
     }
 
+    isUsernameTaken = async (username: string): Promise<boolean> => {
+        const userAuthentication = await this.findByUsername(username);
+        return userAuthentication !== null;
+    }
 }

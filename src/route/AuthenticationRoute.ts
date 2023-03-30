@@ -13,7 +13,7 @@ export class AuthenticationRoute {
         const router = Router()
 
         router.post(`${group}/sign-up`, this.controller.register);
-        router.post(`${group}/sign-in`, this.controller.register);
+        router.post(`${group}/sign-in`, this.controller.login);
         router.post(`${group}/sign-out`, this.controller.register);
 
         return router;

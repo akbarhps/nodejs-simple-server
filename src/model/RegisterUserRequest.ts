@@ -5,7 +5,7 @@ export class RegisterUserRequest {
     username: string;
     password: string;
 
-    private validationSchema = Joi.object({
+    private readonly validationSchema = Joi.object({
         email: Joi.string().email().max(100).required(),
         username: Joi.string().alphanum().min(3).max(16).required(),
         password: Joi.string().min(8).required()

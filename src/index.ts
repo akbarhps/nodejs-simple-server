@@ -1,16 +1,17 @@
 import express, {Express, NextFunction, Request, Response} from "express";
 import cors from "cors";
-import {createWriteStream} from "fs";
+import helmet from "helmet";
 import dotenv from "dotenv";
 import morgan from "morgan";
 import bodyParser from "body-parser";
+import {createWriteStream} from "fs";
 import {PrismaClient} from "@prisma/client";
-import {collectDefaultMetrics, Registry} from "prom-client";
 import {errorHandler} from "./exception/ErrorHandler";
-import {UserAuthenticationRepository} from "./repository/UserAuthenticationRepository";
-import {UserAuthenticationService} from "./service/UserAuthenticationService";
+import {collectDefaultMetrics, Registry} from "prom-client";
 import {AuthenticationRoute} from "./route/AuthenticationRoute";
+import {UserAuthenticationService} from "./service/UserAuthenticationService";
 import {UserAuthenticationController} from "./controller/UserAuthenticationController";
+import {UserAuthenticationRepository} from "./repository/UserAuthenticationRepository";
 
 dotenv.config();
 
@@ -23,6 +24,7 @@ const logWriteMode = process.env.LOG_WRITE_MODE || "dev";
 
 app.use(cors());
 app.use(bodyParser.json());
+app.use(helmet())
 app.use(bodyParser.urlencoded({extended: true}));
 
 app.use(morgan(logPrintMode));

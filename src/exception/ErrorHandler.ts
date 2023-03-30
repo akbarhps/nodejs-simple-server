@@ -1,5 +1,5 @@
 import {Response} from 'express';
-import {WebError, HttpCode} from './WebbError';
+import {WebError, HttpCode} from './WebError';
 
 class ErrorHandler {
 
